@@ -26,7 +26,7 @@ $ cd awproject3
 $ python server.app
 
 3. In browser, goto: http://localhost:5000/  
-You will the following output:
+You will see the following output:  
 /**************************************
 This is your index page
 
