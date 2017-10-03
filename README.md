@@ -25,5 +25,5 @@ $ pip install -r requirements.txt
 $ cd awproject3
 $ python server.app
 
-3. In browser, goto: http://localhost:5000/
-
+3. In browser, goto: http://localhost:5000/  
+You will see some output.
