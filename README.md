@@ -14,7 +14,7 @@ $ brew services start mongodb
 $ cd awproject3/db
 $ mongoimport --db awproject3 --collection table1 --file 01_01_2014-12_31_2014[1].json --jsonArray
 
-Database:awproject3 and Collection:table1 is created in mongodb
+Database:awproject3 and Collection:table1 are created in mongodb
 
 Flask server:
 1. To install the needed python packages
