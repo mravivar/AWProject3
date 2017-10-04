@@ -10,7 +10,11 @@ $ brew tap homebrew/services
 3. Start mongodb service  
 $ brew services start mongodb
 
-4. Load data to mongodb  
+4. Verify the version  
+$ mongo --version  
+MongoDB shell version v3.4.7  
+
+5. Load data to mongodb  
 $ cd awproject3/db  
 $ mongoimport --db awproject3 --collection table1 --file 01_01_2014-12_31_2014[1].json --jsonArray  
 
