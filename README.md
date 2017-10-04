@@ -12,7 +12,7 @@ $ brew services start mongodb
 
 4. Verify the version  
 $ mongo --version  
-MongoDB shell version v3.4.7  
+MongoDB shell version v3.4.7 (3.4.x should work fine)  
 
 5. Load data to mongodb  
 $ cd awproject3/db  
