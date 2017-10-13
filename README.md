@@ -16,8 +16,8 @@ MongoDB shell version v3.4.7 (3.4.x should work fine)
 
 5. Load all csv data to mongodb  
 $ cd awproject3/db  
-update the absolute path to your utf8 folder in load_csv_data_to_mongodb.py and run it
-$ chmod 777 load_csv_data_to_mongodb.py
+update the absolute path to your utf8 folder in load_csv_data_to_mongodb.py and run it  
+$ chmod 777 load_csv_data_to_mongodb.py  
 $ ./load_csv_data_to_mongodb.py  
 
 Database:awproject3 and Collection:table1 are created in mongodb  
