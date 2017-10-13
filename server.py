@@ -12,10 +12,11 @@ app = Flask(__name__)
 def index():
 	#Display the all Tasks
 	tuple = table.find_one()
+	noOfDocuments = table.count()
 	#data = tuple['Name'] +" "+ tuple['Address'] +" "+ tuple['City'] +" "+ tuple['State'] +" "+ str(tuple['ZIP'])
 	data=tuple['type']+ " " +tuple['title']+ " "+tuple['content']+ " "+tuple['text']+ " "+tuple['code']+ " "+tuple['user_id']+ " "+tuple['time']+ " "+tuple['vote']+ " "+tuple['reputation']+ " "+tuple['accept_rate']+ " "+tuple['tag']
 
-	return render_template('index.html', data=data)
+	return render_template('index.html', data=data, noOfDocuments=noOfDocuments)
 
 if __name__ == "__main__":
     app.run(debug=True)
