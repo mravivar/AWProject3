@@ -14,9 +14,11 @@ $ brew services start mongodb
 $ mongo --version  
 MongoDB shell version v3.4.7 (3.4.x should work fine)  
 
-5. Load data to mongodb  
+5. Load all csv data to mongodb  
 $ cd awproject3/db  
-$ mongoimport --db awproject3 --collection table1 --file 01_01_2014-12_31_2014[1].json --jsonArray  
+update the absolute path to your utf8 folder in load_csv_data_to_mongodb.py and run it
+$ chmod 777 load_csv_data_to_mongodb.py
+$ ./load_csv_data_to_mongodb.py  
 
 Database:awproject3 and Collection:table1 are created in mongodb  
 
