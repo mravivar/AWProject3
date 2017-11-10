@@ -16,9 +16,7 @@ MongoDB shell version v3.4.7 (3.4.x should work fine)
 
 5. Load all csv data to mongodb  
 $ cd awproject3/db  
-update the absolute path to your utf8 folder in load_csv_data_to_mongodb.py  
-$ chmod 777 load_csv_data_to_mongodb.py  
-$ ./load_csv_data_to_mongodb.py  
+$ python load_csv_data_to_mongodb.py  
 
 Database:awproject3 and Collection:table1 are created in mongodb  
 
@@ -29,7 +27,7 @@ $ pip install -r requirements.txt
 
 2. To start flask server  
 $ cd awproject3  
-$ python server.app  
+$ python server.py  
 
 3. In browser, goto: http://localhost:5000/  
 You will see some output.  

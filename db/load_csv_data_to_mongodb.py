@@ -6,7 +6,7 @@ client = MongoClient()
 db = client.awproject3
 
 # update your path to utf8 folder
-path_to_csv_files = '/Users/murali/Documents/github/AWProject3/db/utf8/'
+path_to_csv_files = './utf8/'
 
 files = os.listdir(path_to_csv_files)
 for file in files:
