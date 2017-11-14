@@ -1,5 +1,6 @@
 from flask import Flask, render_template,request,redirect,url_for # For flask implementation
 from pymongo import MongoClient # Database connector
+from flask_cors import CORS
 
 client = MongoClient('localhost', 27017)    #Configure the connection to the database
 db = client.awproject3    #Select the database
@@ -8,20 +9,19 @@ table = db.table1 #Select the collection
 app = Flask(__name__,
             static_folder = "public/static",
             template_folder = "public")
+CORS(app)
+
+@app.route('/api/list')
+def list():
+	tuple = table.find_one()
+	noOfDocuments = table.count()
+	data=tuple['type']+ " " +tuple['title']+ " "+tuple['content']+ " "+tuple['text']+ " "+tuple['code']+ " "+tuple['user_id']+ " "+tuple['time']+ " "+tuple['vote']+ " "+tuple['reputation']+ " "+tuple['accept_rate']+ " "+tuple['tag']
+	return data
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
     return render_template("index.html")
-
-#def index():
-#	#Display the all Tasks
-#	tuple = table.find_one()
-#	noOfDocuments = table.count()
-#	#data = tuple['Name'] +" "+ tuple['Address'] +" "+ tuple['City'] +" "+ tuple['State'] +" "+ str(tuple['ZIP'])
-#	data=tuple['type']+ " " +tuple['title']+ " "+tuple['content']+ " "+tuple['text']+ " "+tuple['code']+ " "+tuple['user_id']+ " "+tuple['time']+ " "+tuple['vote']+ " "+tuple['reputation']+ " "+tuple['accept_rate']+ " "+tuple['tag']
-
-#	return render_template('index.html', data=data, noOfDocuments=noOfDocuments)
 
 if __name__ == "__main__":
     app.run(debug=True)
