@@ -31,3 +31,8 @@ $ python server.py
 
 3. In browser, goto: http://localhost:5000/  
 You will see some output.  
+
+## Frontend 
+1. run `npm install` inside the `frontend` folder
+2. run `npm run build` for production build or `npm run dev` for development server.
+
