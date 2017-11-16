@@ -1,7 +1,7 @@
 # AWProject3
 
 ## Database
-Python version: 3.5.1 (3.x should work fine)
+Python version: 3.5.2 (3.x should work fine)
 
 1. To install mongodb (v3.4)  
 $ brew install mongodb
