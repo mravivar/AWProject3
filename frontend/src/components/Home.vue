@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <p>Home page</p>
     <p v-if="sampleData">{{sampleData}}</p>
   </div>

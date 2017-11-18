@@ -7,8 +7,8 @@ db = client.awproject3    #Select the database
 table = db.table1 #Select the collection
 
 app = Flask(__name__,
-            static_folder = "public/static",
-            template_folder = "public")
+            static_folder = "frontend/dist",
+            template_folder = "frontend")
 CORS(app)
 
 @app.route('/api/list')
