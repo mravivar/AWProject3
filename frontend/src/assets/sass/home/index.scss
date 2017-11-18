@@ -1,0 +1,36 @@
+.container {
+  background-color: white;
+  margin-top: 50px;
+  min-height: 500px;
+}
+
+.list-actions {
+  padding: 15px;
+  border: solid 1px #ddd;
+  margin-bottom: 10px;
+}
+
+.questions-list-item {
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  box-shadow: none;
+  display: table;
+  margin: 0;
+  padding: 15px;
+  width: 100%;
+  position: relative;
+  
+  .stats {
+    background: #fff;
+    float: left;
+    text-align: center;
+    border: solid 1px #ddd;
+    border-radius: 2px;
+    margin-left: 15px;
+  
+    div {
+      border-bottom: solid 1px #ddd;
+      min-width: 50px;
+      padding: 4px 0;
+    }
+  }
+}

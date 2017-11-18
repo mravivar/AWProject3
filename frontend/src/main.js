@@ -1,7 +1,8 @@
 import App from './App.vue'
 import router from './router'
 
-Vue.component('TopBar', require('./components/TopBar.vue').default);
+Vue.component('top-bar', require('./components/top-bar').default);
+Vue.component('pagination', require('./components/pagination').default);
 
 new Vue({
   el: '#app',

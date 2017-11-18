@@ -11,7 +11,7 @@ app = Flask(__name__,
             template_folder = "frontend")
 CORS(app)
 
-@app.route('/api/list')
+@app.route('/api/questions')
 def list():
 	tuple = table.find_one()
 	noOfDocuments = table.count()

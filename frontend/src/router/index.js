@@ -1,13 +1,13 @@
 import Router from 'vue-router'
 
 const routerOptions = [
-  { path: '/', component: 'Home' },
-  { path: '/settings', component: 'Settings' }
+  { path: '/', component: 'home' },
+  { path: '/settings', component: 'settings' }
 ]
 const routes = routerOptions.map(route => {
   return {
     ...route,
-    component: () => import(`../components/${route.component}.vue`)
+    component: () => import(`../components/${route.component}`)
   }
 })
 
