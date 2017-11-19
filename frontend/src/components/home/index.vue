@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
+  <div class="container main-container">
     <div class="row">
       <div class="col-md-offset-2 col-md-8 col-sm-12">
         <!--div class="list-actions"></div-->
         <div class="row questions-list-item" v-for="question in questions" :key="question.id">
           <div class="col-sm-7">
-            <div class="text"><strong>{{question.description}}</strong></div>
+            <router-link :to="{name: 'question', params: { id: question.id}}"><div class="text"><strong>{{question.description}}</strong></div></router-link>
             <div class="tag-list">
               <a v-for="tag in question.tags" class="tag font-xs">{{tag}}</a>
             </div>
