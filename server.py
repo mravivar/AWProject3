@@ -60,13 +60,6 @@ def logout():
 	flash('You were logged out.')
 	return redirect(url_for('login'))
 
-@app.route('/api/questions')
-def list():
-	tuple = table.find_one()
-	noOfDocuments = table.count()
-	data=tuple['type']+ " " +tuple['title']+ " "+tuple['content']+ " "+tuple['text']+ " "+tuple['code']+ " "+tuple['user_id']+ " "+tuple['time']+ " "+tuple['vote']+ " "+tuple['reputation']+ " "+tuple['accept_rate']+ " "+tuple['tag']
-	return data
-
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 @login_required
@@ -74,7 +67,7 @@ def catch_all(path):
     return render_template("index.html")
 
 
-@app.route('/questions', methods=['GET'])
+@app.route('/api/questions', methods=['GET'])
 def getQuestions():
 	page_number = int(request.args['page'])
 	if 'per_page' in request.args:
