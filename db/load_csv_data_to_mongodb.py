@@ -1,9 +1,11 @@
 import os
 import json
+import csv
 from pymongo import MongoClient
 
 client = MongoClient()
 db = client.awproject3
+db.table1.delete_many({})
 
 # update your path to utf8 folder
 path_to_csv_files = './utf8/'
@@ -13,25 +15,24 @@ for file in files:
     file1 = path_to_csv_files + file
     print(file1)
     f = open(file1, "r")
-    lines = f.readlines()
+    csv_reader = csv.reader(f)
 
-    for line in lines:
-        str = json.dumps(line)
-        arr = str.split(',')
+    for line in csv_reader:
         # print(len(arr))
         dict1 = {
-            "type": arr[0],
-            "title": arr[1],
-            "content": arr[2],
-            "text": arr[3],
-            "code": arr[4],
-            "user_id": arr[5],
-            "time": arr[6],
-            "vote": arr[7],
-            "reputation": arr[8],
-            "accept_rate": arr[9],
-            "tag": arr[10]
+            "type": line[0],
+            "title": line[1],
+            "content": line[2],
+            "text": line[3],
+            "code": line[4],
+            "user_id": line[5],
+            "time": line[6],
+            "vote": line[7],
+            "reputation": line[8],
+            "accept_rate": line[9],
+            "tag": line[10].split()
         }
+
         res = db.table1.insert_one(dict1)
 
     f.close()
