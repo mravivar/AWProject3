@@ -1,0 +1,15 @@
+.font-xs {
+  font-size: 11px;
+}
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+}
+
+.container.main-container {
+  background-color: white;
+  margin-top: 50px;
+  min-height: 500px;
+  border-radius: 5px;
+  padding: 50px 20px 20px;
+}
