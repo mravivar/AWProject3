@@ -20,6 +20,13 @@ MongoDB shell version v3.4.7 (3.4.x should work fine)
 $ cd awproject3/db  
 $ python load_csv_data_to_mongodb.py  
 
+6. Load user collection data
+db.createCollection("table2")
+
+db.table1.find({},{tag:1,reputation:1,user_id:1,_id:0}).forEach(function(doc){ db.table2.insert(doc); });
+
+db.table2.updateMany({},{$set:{"password":NumberInt(123)}},false,false)
+
 Database:awproject3 and Collection:table1 are created in mongodb  
 
 ## Flask server:  
