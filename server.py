@@ -40,20 +40,11 @@ def login():
     error = None
     if request.method == 'POST':
     	tuple = table2.find_one({"user_id": request.form['username']})
-    	#print("#################################################")
-    	#print(request.form['username'])
-    	#print(request.form['password'])
-    	#print(tuple)
-    	#print(tuple['user_id'])
-    	#print(tuple['password'])
-    	#print("#################################################")
-        #if request.form['password'] != tuple['password']:
-        user_id = tuple['user_id']
-        if request.form['username'] != tuple['user_id']: #or request.form['password'] != tuple['password']:
+        if request.form['username'] != tuple['user_id'] or request.form['password'].encode('utf8') != str(tuple['password']):
             error = 'Invalid Credentials. Please try again.'
         else:
             session['logged_in'] = True
-            session['user_id'] = user_id
+            session['user_id'] = tuple['user_id']
             flash('You were logged in.')
             return redirect(url_for('home'))
     return render_template('login.html', error=error)
@@ -61,8 +52,6 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
-	#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-	#print(session['user_id'])
 	session.pop('logged_in', None)
 	flash('You were logged out.')
 	return redirect(url_for('login'))
