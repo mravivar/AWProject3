@@ -34,14 +34,13 @@ def getQuestions():
 		per_page = int(request.args['per_page'])
 	else:
 		per_page = PER_PAGE_DEFAULT
-	'''
+	
 	if not session['logged_in']:
 		res = {'code': 401, 'message':'User not logged in'}
 		return json.dumps(res)
 
 	user_id = session['user_id']
-	'''
-	user_id = "1224232" #needs change
+	
 	user_tuple = user_table.find_one({'user_id': user_id})
 	user_tags = user_tuple['tag'].split()
 
@@ -53,9 +52,9 @@ def getQuestions():
 
 	questions = []
 	for result in query_results:
-		per_question = {'id': str(result['_id']), 'description': result['title'].replace("\"", "'"), 'tags': result['tag']}
+		per_question = {'id': str(result['_id']), 'description': result['title'].replace("&quot;", "'"), 'tags': result['tag']}
 		question_user_tuple = user_table.find_one({'user_id': result['user_id']})
-		user_details = {'id': result['user_id'], 'name': 'hardcoded_user', 'ratings': 'hardcoded_reputation'}
+		user_details = {'id': result['user_id'], 'name': question_user_tuple['user_name'], 'ratings': question_user_tuple['reputation']}
 		per_question['user'] = user_details
 		answer_count = table.count({'title': result['title'], 'type': {'$in': ['answer', 'accepted-answer']}})
 		per_question['stats'] = {'votes': result['vote'], 'answer_count': answer_count}
