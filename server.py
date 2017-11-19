@@ -44,7 +44,7 @@ def login():
     error = None
     if request.method == 'POST':
     	tuple = user_table.find_one({"user_id": request.form['username']})
-        if request.form['username'] != tuple['user_name'] or request.form['password'].encode('utf8') != str(tuple['password']):
+        if request.form['username'] != tuple['user_id'] or request.form['password'].encode('utf8') != str(tuple['password']):
             error = 'Invalid Credentials. Please try again.'
         else:
             session['logged_in'] = True
