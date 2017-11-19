@@ -1,4 +1,5 @@
-from flask import Flask, render_template,request,redirect,url_for # For flask implementation
+from flask import Flask, render_template, redirect, url_for, request, session, flash
+from functools import wraps
 from pymongo import MongoClient # Database connector
 from flask_cors import CORS
 import json
@@ -10,10 +11,54 @@ table = db.table1 #Select the collection
 user_table = db.table2
 PER_PAGE_DEFAULT = 20
 
+
 app = Flask(__name__,
             static_folder = "frontend/dist",
             template_folder = "frontend")
 CORS(app)
+
+# config
+app.secret_key = 'aw project'
+
+# login required decorator
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('You need to login first.')
+            return redirect(url_for('login'))
+    return wrap
+
+# use decorators to link the function to a url
+@app.route('/')
+@login_required
+def home():
+    return render_template('index.html')  # render a template
+    # return "Hello, World!"  # return a string
+
+# route for handling the login page logic
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+    	tuple = user_table.find_one({"user_id": request.form['username']})
+        if request.form['username'] != tuple['user_id'] or request.form['password'].encode('utf8') != str(tuple['password']):
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            session['logged_in'] = True
+            session['user_id'] = tuple['user_id']
+            flash('You were logged in.')
+            return redirect(url_for('home'))
+    return render_template('login.html', error=error)
+
+@app.route('/logout')
+@login_required
+def logout():
+	session.pop('logged_in', None)
+	flash('You were logged out.')
+	return redirect(url_for('login'))
 
 @app.route('/api/questions')
 def list():
@@ -24,8 +69,10 @@ def list():
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
+@login_required
 def catch_all(path):
     return render_template("index.html")
+
 
 @app.route('/questions', methods=['GET'])
 def getQuestions():

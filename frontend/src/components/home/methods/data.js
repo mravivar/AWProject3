@@ -1,5 +1,7 @@
 export default () => {
   return {
-    questions: []
+    questions: [],
+    page: 1,
+    totalPages: 1
   }
 }
