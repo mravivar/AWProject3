@@ -1,8 +1,8 @@
-//.list-actions {
-//  padding: 15px;
-//  border: solid 1px #ddd;
-//  margin-bottom: 10px;
-//}
+.list-actions {
+  padding: 15px;
+  border: solid 1px #ddd;
+  margin-bottom: 10px;
+}
 
 .questions-list-item {
   border-bottom: 1px solid rgba(0,0,0,0.08);
@@ -33,27 +33,95 @@
     word-wrap: break-word;
     font-size: 15px;
     line-height: 1.3;
-  }
-  
-  .tag-list {
-    margin-bottom: 10px;
-    clear: both;
-    
-    .tag {
-      display: inline-block;
-      padding: 4px 10px;
-      white-space: nowrap;
-      text-decoration: none;
-      border-radius: 0;
-      background-color: #E1ECF4;
-      border-color: transparent;
-      cursor: pointer;
-      margin: 0 2px 2px;
+  }  
+}
 
-      &:hover {
-        color: #3097D1;
-        background-color: #cee0ed;
-      }
+.tag-list {
+  margin-bottom: 10px;
+  clear: both;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  white-space: nowrap;
+  text-decoration: none;
+  border-radius: 0;
+  background-color: #E1ECF4;
+  border-color: transparent;
+  cursor: pointer;
+  margin: 0 2px 2px;
+
+  &:hover {
+    color: #3097D1;
+    background-color: #cee0ed;
   }
+}
+
+.reputation-tag {
+  @extend .tag;
+  background: #FFC107;
+  padding: 2px 4px;
+  &:hover {
+    color: #777;
+    background-color: #FFC107;
+  }
+}
+
+.user-details {
+  font-size: 13px;
+  padding: 12px;
+  border-bottom: solid 1px rgba(0,0,0,0.1);
+  background: #fafafa;
+}
+  
+.item-content {
+  padding: 15px;
+}
+  
+.answers-count {
+  margin-top:30px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 5px;
+}
+  
+.item-inner-box {
+  border: 2px solid rgba(0,0,0,0.1);
+  border-radius: 3px;
+}
+
+.item-box {
+  padding-right: 40px;
+  position: relative;
+}
+
+.vote-box {
+  position: absolute;
+  top: 0;
+  right: 0;
+  a {
+    background-image: linear-gradient(#fff,#fcfcfc);
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    color: #777;
+    display: block;
+    font-size: 15px;
+    height: 27px;
+    line-height: 26px;
+    padding: 0;
+    text-align: center;
+    text-decoration: none;
+    width: 27px;
+    cursor: pointer;
+  }
+  .vote-count {
+    color: #333;
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    height: 25px;
+    line-height: 23px;
+    padding: 0 1px;
+    text-align: center;
   }
 }
