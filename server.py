@@ -4,10 +4,13 @@ from pymongo import MongoClient # Database connector
 from flask_cors import CORS
 import json
 from bson.json_util import dumps
+from bson.objectid import ObjectId
+import copy
+import re
 
 client = MongoClient('localhost', 27017)    #Configure the connection to the database
 db = client.awproject3    #Select the database
-table = db.table1 #Select the collection
+questions_table = db.table1 #Select the collection
 user_table = db.table2
 PER_PAGE_DEFAULT = 20
 
@@ -62,17 +65,78 @@ def logout():
 
 @app.route('/api/questions')
 def list():
-	tuple = table.find_one()
-	noOfDocuments = table.count()
+	tuple = questions_table.find_one()
+	noOfDocuments = questions_table.count()
 	data=tuple['type']+ " " +tuple['title']+ " "+tuple['content']+ " "+tuple['text']+ " "+tuple['code']+ " "+tuple['user_id']+ " "+tuple['time']+ " "+tuple['vote']+ " "+tuple['reputation']+ " "+tuple['accept_rate']+ " "+tuple['tag']
 	return data
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
-@login_required
+#@login_required
 def catch_all(path):
     return render_template("index.html")
 
+#@login_required
+@app.route('/questions/<question_id>', methods=['GET'])
+def getQuestionDetails(question_id):
+
+	# fill question details
+	question_details = questions_table.find({'_id': ObjectId(question_id)})
+	return_result = {}
+	question = {}
+	for ques in question_details:
+		for key, value in ques.iteritems():
+			if key != '_id':
+				question[key] = value
+			else:
+				question[key] = str(value)
+
+	return_result['question'] = question
+
+	# fill answers
+	answer_details = questions_table.find({'type': {'$in': ['answer', 'accepted-answer']}, 'title': question['title']})
+	answers = []
+	accepted_answer = {}
+	for answer in answer_details:
+		if answer['type'] == 'answer':
+			answers.append(answer)
+		else:
+			accepted_answer = copy.deepcopy(answer)
+	return_result['answers'] = answers
+	return_result['accepted_answer'] = accepted_answer
+
+	return dumps(return_result)
+
+@login_required
+@app.route('/search', methods=['GET'])
+def searchText():
+	page_number = int(request.args['page'])
+	if 'per_page' in request.args:
+		per_page = int(request.args['per_page'])
+	else:
+		per_page = PER_PAGE_DEFAULT
+	query_string = request.args['query']
+	regex = re.compile('.*'+query_string+'.*', re.IGNORECASE)
+
+	query_results = questions_table.find({'type': 'question', 'title': regex}).skip((page_number-1)*per_page).limit(per_page)
+	total_results_count = questions_table.count({'type': 'question', 'title': regex})
+
+	return_result = {'code': 200, 'message': 'success'}
+	page_context = {'page': page_number, 'per_page': per_page,'total_pages': total_results_count/per_page}
+
+	questions = []
+	for result in query_results:
+		per_question = {'id': str(result['_id']), 'description': result['title'].replace("&quot;", "'"), 'tags': result['tag']}
+		question_user_tuple = user_table.find_one({'user_id': result['user_id']})
+		user_details = {'id': result['user_id'], 'name': 'hardcoded_user_name', 'ratings': 'hardcoded_reputation'}
+		per_question['user'] = user_details
+		answer_count = questions_table.count({'title': result['title'], 'type': {'$in': ['answer', 'accepted-answer']}})
+		per_question['stats'] = {'votes': result['vote'], 'answer_count': answer_count}
+		questions.append(per_question)
+
+	return_result['page_context'] = page_context
+	return_result['questions'] = questions
+	return json.dumps(return_result)
 
 @app.route('/questions', methods=['GET'])
 def getQuestions():
@@ -91,8 +155,8 @@ def getQuestions():
 	user_tuple = user_table.find_one({'user_id': user_id})
 	user_tags = user_tuple['tag'].split()
 
-	query_results = table.find({'type': 'question', 'tag': {'$in': user_tags}}).skip((page_number-1)*per_page).limit(per_page)
-	total_results_count = table.count({'type': 'question', 'tag': {'$in': user_tags}})
+	query_results = questions_table.find({'type': 'question', 'tag': {'$in': user_tags}}).skip((page_number-1)*per_page).limit(per_page)
+	total_results_count = questions_table.count({'type': 'question', 'tag': {'$in': user_tags}})
 
 	return_result = {'code': 200, 'message': 'success'}
 	page_context = {'page': page_number, 'per_page': per_page,'total_pages': total_results_count/per_page}
@@ -103,7 +167,7 @@ def getQuestions():
 		question_user_tuple = user_table.find_one({'user_id': result['user_id']})
 		user_details = {'id': result['user_id'], 'name': question_user_tuple['user_name'], 'ratings': question_user_tuple['reputation']}
 		per_question['user'] = user_details
-		answer_count = table.count({'title': result['title'], 'type': {'$in': ['answer', 'accepted-answer']}})
+		answer_count = questions_table.count({'title': result['title'], 'type': {'$in': ['answer', 'accepted-answer']}})
 		per_question['stats'] = {'votes': result['vote'], 'answer_count': answer_count}
 		questions.append(per_question)
 
