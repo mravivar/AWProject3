@@ -173,6 +173,24 @@ def getQuestions():
 	return_result['questions'] = questions
 	return json.dumps(return_result)
 
+@app.route('/api/userprofile', methods=['GET'])
+def userprofile():	
+	if not session['logged_in']:
+		res = {'code': 401, 'message':'User not logged in'}
+		return json.dumps(res)
+
+	user_id = session['user_id']
+	query_results = table.find({'user_id': user_id})
+	return_result = {'code': 200, 'message': 'success'}
+	user_tuples = []
+
+	# future enhancements: separate the results into questions and answers
+	for result in query_results:
+		per_tuple = {'id': str(result['_id']), 'type': result['type'], 'title': result['title'].replace("&quot;", "'"), 'content': result['content'], 'text': result['text'], 'code': result['code'], 'time': result['time'], 'vote': result['vote'], 'reputation': result['reputation'], 'accept_rate': result['accept_rate'], 'tags': result['tag']}
+		user_tuples.append(per_tuple)
+	
+	return_result['user_tuples'] = user_tuples
+	return json.dumps(return_result)
 
 if __name__ == "__main__":
     app.run(debug=True)
