@@ -75,7 +75,7 @@ def catch_all(path):
     return render_template("index.html")
 
 #@login_required
-@app.route('/questions/<question_id>', methods=['GET'])
+@app.route('/api/questions/<question_id>', methods=['GET'])
 def getQuestionDetails(question_id):
 
 	# fill question details
@@ -106,7 +106,7 @@ def getQuestionDetails(question_id):
 	return dumps(return_result)
 
 @login_required
-@app.route('/search', methods=['GET'])
+@app.route('/api/search', methods=['GET'])
 def searchText():
 	page_number = int(request.args['page'])
 	if 'per_page' in request.args:
