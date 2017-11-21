@@ -18,6 +18,7 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><router-link to="/settings"><span class="glyphicon glyphicon-cog"></span>&nbsp;Settings</router-link></li>
+            <li><a href="/logout">Logout</a></li>
         </ul>
       </div>
     </div>
