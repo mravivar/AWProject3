@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, session, flash
+from flask import Flask, render_template, redirect, url_for, request, session, flash, send_from_directory
 from functools import wraps
 from pymongo import MongoClient # Database connector
 from flask_cors import CORS
@@ -62,6 +62,11 @@ def logout():
 	session.pop('logged_in', None)
 	flash('You were logged out.')
 	return redirect(url_for('login'))
+  
+# to serve static css files  
+@app.route('/public/<path:filename>')
+def custom_static(filename):
+    return send_from_directory("frontend/public/", filename)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
