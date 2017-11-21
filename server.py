@@ -68,6 +68,20 @@ def logout():
 	session.pop('logged_in', None)
 	flash('You were logged out.')
 	return redirect(url_for('login'))
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    error = None
+    if request.method == 'POST':
+        tuple=user_table.find_one({"user_id":request.form["username"]})
+        print("############################")
+        print(tuple)
+        if tuple is None:
+            user_table.insert({"user_id":request.form["username"], "password":request.form["password"].encode('utf8'), "tag":request.form["interests"]})
+            return redirect(url_for('login'))
+        else:
+            flash('The user already exists')
+    return render_template('register.html', error=error)
   
 # to serve static css files  
 @app.route('/public/<path:filename>')
