@@ -1,4 +1,4 @@
-export default () => {
+export default function () {
   return {
     questions: [],
     page: 1,
