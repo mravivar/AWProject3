@@ -7,6 +7,12 @@ from bson.json_util import dumps
 from bson.objectid import ObjectId
 import copy
 import re
+import nltk
+from nltk.corpus import stopwords
+import time
+from rake_nltk import Rake
+
+nltk.download('stopwords')
 
 client = MongoClient('localhost', 27017)    #Configure the connection to the database
 db = client.awproject3    #Select the database
@@ -114,7 +120,10 @@ def searchText():
 	else:
 		per_page = PER_PAGE_DEFAULT
 	query_string = request.args['query']
-	regex = re.compile('.*'+query_string+'.*', re.IGNORECASE)
+	s=set(stopwords.words('english'))
+	word_array = filter(lambda w: not w in s,query_string.split())
+	search_text = '|'.join(word_array)
+	regex = re.compile('.*'+search_text+'.*', re.IGNORECASE)
 
 	query_results = questions_table.find({'type': 'question', 'title': regex}).skip((page_number-1)*per_page).limit(per_page)
 	total_results_count = questions_table.count({'type': 'question', 'title': regex})
@@ -126,7 +135,7 @@ def searchText():
 	for result in query_results:
 		per_question = {'id': str(result['_id']), 'description': result['title'].replace("&quot;", "'"), 'tags': result['tag']}
 		question_user_tuple = user_table.find_one({'user_id': result['user_id']})
-		user_details = {'id': result['user_id'], 'name': 'hardcoded_user_name', 'ratings': 'hardcoded_reputation'}
+		user_details = {'id': result['user_id'], 'name': question_user_tuple['user_name'], 'ratings': question_user_tuple['reputation']}
 		per_question['user'] = user_details
 		answer_count = questions_table.count({'title': result['title'], 'type': {'$in': ['answer', 'accepted-answer']}})
 		per_question['stats'] = {'votes': result['vote'], 'answer_count': answer_count}
@@ -135,6 +144,39 @@ def searchText():
 	return_result['page_context'] = page_context
 	return_result['questions'] = questions
 	return json.dumps(return_result)
+
+
+def get_tags(content):
+	r = Rake()
+	r.extract_keywords_from_text(content)
+	phrases = r.get_ranked_phrases()
+	number_of_words = min(3, len(phrases))
+	return phrases[0:number_of_words]
+  
+@login_required
+@app.route('/api/questions', methods=['POST'])
+def addQuestion():
+	input_text = request.get_json()
+	insert_record = {}
+	user_id = session['user_id']
+	user_tuple = user_table.find_one({'user_id': user_id})
+
+	insert_record['code'] = input_text['code']
+	insert_record['text'] = input_text['text']
+	insert_record['vote'] = 0
+	insert_record['user_id'] = user_id
+	insert_record['title'] = input_text['title']
+	insert_record['content'] = input_text['content']
+	insert_record['reputation'] = user_tuple['reputation']
+	insert_record['accept_rate'] = user_tuple['accept_rate']
+	insert_record['type'] = 'question'
+	insert_record['time'] = str(int(time.time()))
+
+	insert_record['tag'] = get_tags(input_text['title']+' '+input_text['text'])
+	questions_table.insert_one(insert_record)
+
+	return dumps(insert_record)
+
 
 @app.route('/api/questions', methods=['GET'])
 def getQuestions():
