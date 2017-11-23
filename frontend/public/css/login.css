@@ -1,0 +1,18 @@
+body {
+  background-color: #f5f8fa;
+}
+.navbar-default {
+  background-color: white;
+}
+.container.login-container {
+  background-color: white;
+  margin-top: 10vh;
+  max-width: 700px;
+  border-radius: 10px;
+  padding: 60px 20px 40px;
+  box-shadow: 0px 0px 6px 0px #CCC;
+}
+
+a:hover, a:active, a:focus {
+  text-decoration: none;
+}
