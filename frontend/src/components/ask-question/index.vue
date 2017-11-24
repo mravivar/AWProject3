@@ -2,7 +2,7 @@
   <div class="container main-container">
     <div class="col-md-offset-2 col-md-8 col-sm-12">
       <div class="row">
-        <form action=''>
+        <form>
           <div class="form-group">
             <label for="title">Title</label>
             <input type="text" class="form-control" id="title" placeholder="Question title" v-model='title'>
@@ -10,7 +10,13 @@
           </div>
           <div class="form-group">
             <label for="description">Description</label>
-            <textarea class="form-control" id="description" rows=10 v-model='description'></textarea>
+            <textarea class="form-control" id="description" rows=5 v-model='description'></textarea>
+            <p class="help-block">A detailed description of your question.</p>
+          </div>
+          <div class="form-group">
+            <label for="description">Code</label>
+            <textarea class="form-control" id="description" rows=5 v-model='code'></textarea>
+            <p class="help-block">If your question has any code in it.</p>
           </div>
           <button type="submit" class="btn btn-primary" @click='askQuestion'>Submit</button>
         </form>
@@ -24,18 +30,22 @@ export default {
   data () {
     return {
       title: '',
-      description: ''
+      description: '',
+      code: ''
     }
   },
   methods: {
-    askQuestion () {
+    askQuestion (e) {
+      e.preventDefault();
       let url = `${API_BASE_URL}/questions`;
       let data = {};
+      let self = this;
       data.title = this.title;
-      data.content = this.description;
+      data.text = this.description;
+      data.code = this.code;
       axios.post(url, data)
       .then(res => {
-        
+        this.$router.push({ path: '/questions' });
       });
     }
   }
