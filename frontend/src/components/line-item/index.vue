@@ -1,7 +1,7 @@
 <template>
   <div v-if="item" class="item-box">
     <div class="vote-box">
-      <a><span class="glyphicon glyphicon-thumbs-up"></span></a>
+      <a @click="$emit('on-upvote', item._id)" :disabled="item.is_upvoted"><span class="glyphicon glyphicon-thumbs-up "></span></a>
       <span class="vote-count">{{item.vote}}</span>
       <!--a><span class="glyphicon glyphicon-thumbs-down"></span></a-->
     </div>
