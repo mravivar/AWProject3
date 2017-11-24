@@ -102,7 +102,7 @@ def getQuestionDetails(question_id):
 		question['is_upvoted'] = user_id in question.get('voters', [])
 		question['time'] = datetime.datetime.fromtimestamp(
 			int(question['time'])
-		).strftime('%Y-%m-%d %H:%M:%S')
+		).strftime('%a %b %d %Y %H:%M:%S')
 
 	return_result['question'] = question
 
@@ -114,7 +114,7 @@ def getQuestionDetails(question_id):
 		answer['is_upvoted'] = user_id in answer.get('voters', [])
 		answer['time'] = datetime.datetime.fromtimestamp(
 			int(answer['time'])
-		).strftime('%Y-%m-%d %H:%M:%S')
+		).strftime('%a %b %d %Y %H:%M:%S')
 
 		if answer['type'] == 'answer':
 			answers.append(answer)
