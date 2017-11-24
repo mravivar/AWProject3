@@ -68,17 +68,18 @@ def logout():
 	session.pop('logged_in', None)
 	flash('You were logged out.')
 	return redirect(url_for('login'))
-  
-# to serve static css files  
-@app.route('/public/<path:filename>')
-def custom_static(filename):
-    return send_from_directory("frontend/public/", filename)
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-#@login_required
-def catch_all(path):
-    return render_template("index.html")
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    error = None
+    if request.method == 'POST':
+        tuple=user_table.find_one({"user_id":request.form["username"]})
+        if tuple is None:
+            user_table.insert({"user_id":request.form["username"], "password":request.form["password"].encode('utf8'), "tag":request.form["interests"]})
+            return redirect(url_for('login'))
+        else:
+            flash('The user already exists')
+    return render_template('register.html', error=error)
 
 #@login_required
 @app.route('/api/questions/<question_id>', methods=['GET'])
@@ -114,7 +115,10 @@ def getQuestionDetails(question_id):
 @login_required
 @app.route('/api/search', methods=['GET'])
 def searchText():
-	page_number = int(request.args['page'])
+	if 'page' in request.args:
+		page_number = int(request.args['page'])
+	else:
+		page_number = 1
 	if 'per_page' in request.args:
 		per_page = int(request.args['per_page'])
 	else:
@@ -212,7 +216,10 @@ def addAnswer():
 
 @app.route('/api/questions', methods=['GET'])
 def getQuestions():
-	page_number = int(request.args['page'])
+	if 'page' in request.args:
+		page_number = int(request.args['page'])
+	else:
+		page_number = 1
 	if 'per_page' in request.args:
 		per_page = int(request.args['per_page'])
 	else:
@@ -265,6 +272,19 @@ def userprofile():
 	
 	return_result['user_tuples'] = user_tuples
 	return json.dumps(return_result)
+
+
+# to serve static css files  
+@app.route('/public/<path:filename>')
+def custom_static(filename):
+    return send_from_directory("frontend/public/", filename)
+
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+#@login_required
+def catch_all(path):
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

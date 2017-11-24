@@ -9,6 +9,11 @@ Vue.component('paginate', require('vuejs-paginate'));
 
 export default {
   props: ['page', 'totalPages'],
+  watch: {
+    page (newVal) {
+      this.$refs.paginate.selected = newVal - 1;
+    }
+  },
   methods: {
     onClick (page) {
       this.$emit('page-change', page);

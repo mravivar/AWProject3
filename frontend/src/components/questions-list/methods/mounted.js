@@ -1,3 +1,3 @@
 export default function () {
-  this.updateList(1);
+  this.updateList();
 }

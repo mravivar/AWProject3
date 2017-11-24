@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" type = "text/css" href = "/public/css/bootstrap.min.css" />
+    <link rel = "stylesheet" type = "text/css" href = "/public/css/login.css" />
+  </head>
+  <body>
+    <nav id='navbar' class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header pull-left">
+          <a class="navbar-brand" to="/">Q/A Forum</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right pull-right">
+          <li><a href="/login">Login</a></li>
+        </ul>
+    </div>
+    </nav>
+    
+    <div class="container login-container">      
+      <form action="" method="post" class="form-horizontal">
+        <div class="form-group">
+          <label for="userName" class="col-sm-2 control-label">User Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="userName" placeholder="User Name" name="username" value="{{request.form.username }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password" class="col-sm-2 control-label">Password</label>
+          <div class="col-sm-10">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="{{request.form.password }}">
+          </div>
+        </div>
+		<div class="form-group">
+          <label for="password" class="col-sm-2 control-label">Interests</label>
+          <div class="col-sm-10">
+			 <input type="password" class="form-control" placeholder="Interests" name="interests" value="{{request.form.interests }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Register</button>
+			<a href="/login">Sign in with existing account</a>
+          </div>
+        </div>
+      </form>
+      
+      
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+      {% endif %}
+      {% for message in get_flashed_messages() %}
+        {{ message }}
+      {% endfor %}
+    </div>
+  </body>
+</html>
