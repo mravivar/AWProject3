@@ -6,12 +6,12 @@
         <div class="tag-list">
           <div v-for="tag in question.tag" class="tag">{{tag}}</div>
         </div>
-        <line-item :item="question" />
+        <line-item :item="question" @on-upvote='upvote'/>
         <h3 v-if="acceptedAnswer" class="answers-count">Accepted Answer(s)</h3>
-        <line-item :item="acceptedAnswer" />
+        <line-item :item="acceptedAnswer" @on-upvote='upvote' />
         <h3 class="answers-count">{{answers.length}} Answer(s)</h3>
         <div v-for="answer in answers">
-          <line-item :item="answer" />
+          <line-item :item="answer" @on-upvote='upvote' />
         </div>
       </div>
     </div>
@@ -23,11 +23,17 @@
 </style>
 
 <script>
-import mounted from './mounted';
-import data from './data';
+import mounted from './methods/mounted';
+import data from './methods/data';
+import processResponse from './methods/process-response';
+import upvote from './methods/upvote';
   
 export default {
   data,
-  mounted
+  mounted,
+  methods: {
+    upvote,
+    processResponse
+  }
 }
 </script>

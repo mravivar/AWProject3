@@ -113,6 +113,11 @@
     text-decoration: none;
     width: 27px;
     cursor: pointer;
+    &[disabled] {
+      color: #004aff;  
+      pointer-events: none;
+      cursor: none;
+    }
   }
   .vote-count {
     color: #333;
