@@ -170,10 +170,11 @@ def changeAcceptedAnswer():
 	return json.dumps(return_result)
 
 @login_required
-@app.route('/api/upvote', methods=['GET'])
+@app.route('/api/upvote', methods=['POST'])
 def upVote():
-	mongo_id = request.args['id']
+	input_text = request.get_json()
 	user_id = session['user_id']
+	mongo_id = input_text['id']
 	questions_table.update({'_id': ObjectId(mongo_id)}, {'$inc': {'vote': 1}, '$addToSet': {'voters': user_id}})
 	return_result = {'code': 200, 'message': 'success'}
 	return json.dumps(return_result)
