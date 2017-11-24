@@ -151,7 +151,15 @@ def get_tags(content):
 	r.extract_keywords_from_text(content)
 	phrases = r.get_ranked_phrases()
 	number_of_words = min(3, len(phrases))
-	return phrases[0:number_of_words]
+	return list(set(phrases[0:number_of_words]))
+
+@login_required
+@app.route('/api/accepted_answer', methods=['GET'])
+def changeAcceptedAnswer():
+	mongo_id = request.args['id']
+	questions_table.update_one({'_id': ObjectId(mongo_id)}, {'$set': {'type': 'accepted-answer'}})
+	return_result = {'code': 200, 'message': 'success'}
+	return json.dumps(return_result)
   
 @login_required
 @app.route('/api/questions', methods=['POST'])
@@ -166,7 +174,32 @@ def addQuestion():
 	insert_record['vote'] = 0
 	insert_record['user_id'] = user_id
 	insert_record['title'] = input_text['title']
-	insert_record['content'] = input_text['content']
+	insert_record['content'] = input_text['text'] + ' '+ input_text['code']
+	insert_record['reputation'] = user_tuple['reputation']
+	insert_record['accept_rate'] = user_tuple['accept_rate']
+	insert_record['type'] = 'question'
+	insert_record['time'] = str(int(time.time()))
+
+	insert_record['tag'] = get_tags(input_text['title']+' '+input_text['text'])
+	questions_table.insert_one(insert_record)
+
+	return_result = {'code': 200, 'message': 'success'}
+	return json.dumps(return_result)
+
+@login_required
+@app.route('/api/answer', methods=['POST'])
+def addAnswer():
+	input_text = request.get_json()
+	insert_record = {}
+	user_id = session['user_id']
+	user_tuple = user_table.find_one({'user_id': user_id})
+
+	insert_record['code'] = input_text['code']
+	insert_record['text'] = input_text['text']
+	insert_record['vote'] = 0
+	insert_record['user_id'] = user_id
+	insert_record['title'] = input_text['title']
+	insert_record['content'] = input_text['text'] + ' ' + input_text['code']
 	insert_record['reputation'] = user_tuple['reputation']
 	insert_record['accept_rate'] = user_tuple['accept_rate']
 	insert_record['type'] = 'question'
@@ -176,7 +209,6 @@ def addQuestion():
 	questions_table.insert_one(insert_record)
 
 	return dumps(insert_record)
-
 
 @app.route('/api/questions', methods=['GET'])
 def getQuestions():
