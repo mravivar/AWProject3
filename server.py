@@ -86,6 +86,7 @@ def register():
 def getQuestionDetails(question_id):
 
 	# fill question details
+	user_id = '3112'#session['user_id']
 	question_details = questions_table.find({'_id': ObjectId(question_id)})
 	return_result = {}
 	question = {}
@@ -95,6 +96,7 @@ def getQuestionDetails(question_id):
 				question[key] = value
 			else:
 				question[key] = str(value)
+		question['is_upvoted'] = user_id in question['voters']
 
 	return_result['question'] = question
 
@@ -103,6 +105,7 @@ def getQuestionDetails(question_id):
 	answers = []
 	accepted_answer = {}
 	for answer in answer_details:
+		answer['is_upvoted'] = user_id in answer['voters']
 		if answer['type'] == 'answer':
 			answers.append(answer)
 		else:
