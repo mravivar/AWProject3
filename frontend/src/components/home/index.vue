@@ -1,7 +1,7 @@
 <template>
   <div class="container main-container">
     <div class="row">
-        <questions-list />
+      <questions-list />
     </div>
   </div>
 </template>

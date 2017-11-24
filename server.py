@@ -229,7 +229,7 @@ def addAnswer():
 	insert_record['content'] = input_text['text'] + ' ' + input_text['code']
 	insert_record['reputation'] = user_tuple['reputation']
 	insert_record['accept_rate'] = user_tuple['accept_rate']
-	insert_record['type'] = 'question'
+	insert_record['type'] = 'answer'
 	insert_record['time'] = str(int(time.time()))
 
 	insert_record['tag'] = get_tags(input_text['title']+' '+input_text['text'])

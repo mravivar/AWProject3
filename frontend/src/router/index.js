@@ -5,7 +5,7 @@ const routerOptions = [
   { path: '/questions', name:'questions', component: 'home' },
   { path: '/settings', component: 'settings' },
   { path: '/questions/:id', name: 'question', component: 'question'},
-  { path: '/ask_question', name: 'ask-question', component: 'ask-question'}
+  { path: '/ask_question', name: 'ask-question', component: 'ask-question'},
 ]
 const routes = routerOptions.map(route => {
   return {

@@ -2,6 +2,7 @@
   <div class="container main-container">
     <div class="row">
       <div class="col-md-offset-2 col-md-8 col-sm-12" v-if="question">
+        <router-link to="/">Go back</router-link>
         <h3>{{question.title}}</h3>
         <div class="tag-list">
           <div v-for="tag in question.tag" class="tag">{{tag}}</div>
@@ -13,6 +14,7 @@
         <div v-for="answer in answers">
           <line-item :item="answer" @on-upvote='upvote' />
         </div>
+        <add-answer @add-answer='addAnswer'/>
       </div>
     </div>
   </div>
@@ -27,13 +29,15 @@ import mounted from './methods/mounted';
 import data from './methods/data';
 import processResponse from './methods/process-response';
 import upvote from './methods/upvote';
+import addAnswer from './methods/add-answer';
   
 export default {
   data,
   mounted,
   methods: {
     upvote,
-    processResponse
+    processResponse,
+    addAnswer
   }
 }
 </script>
