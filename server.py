@@ -11,6 +11,7 @@ import nltk
 from nltk.corpus import stopwords
 import time
 from rake_nltk import Rake
+import datetime
 
 nltk.download('stopwords')
 
@@ -81,11 +82,12 @@ def register():
             flash('The user already exists')
     return render_template('register.html', error=error)
 
-#@login_required
+@login_required
 @app.route('/api/questions/<question_id>', methods=['GET'])
 def getQuestionDetails(question_id):
 
-	# fill question details
+	# fill question detail
+
 	user_id = session['user_id']
 	question_details = questions_table.find({'_id': ObjectId(question_id)})
 	return_result = {}
@@ -98,6 +100,9 @@ def getQuestionDetails(question_id):
 			else:
 				question[key] = str(value)
 		question['is_upvoted'] = user_id in question.get('voters', [])
+		question['time'] = datetime.datetime.fromtimestamp(
+			int(question['time'])
+		).strftime('%Y-%m-%d %H:%M:%S')
 
 	return_result['question'] = question
 
@@ -107,6 +112,10 @@ def getQuestionDetails(question_id):
 	accepted_answer = {}
 	for answer in answer_details:
 		answer['is_upvoted'] = user_id in answer.get('voters', [])
+		answer['time'] = datetime.datetime.fromtimestamp(
+			int(answer['time'])
+		).strftime('%Y-%m-%d %H:%M:%S')
+
 		if answer['type'] == 'answer':
 			answers.append(answer)
 		else:
@@ -246,7 +255,7 @@ def getQuestions():
 	user_id = session['user_id']
 	
 	user_tuple = user_table.find_one({'user_id': user_id})
-	user_tags = user_tuple['tag'].split()
+	user_tags = user_tuple['tag']
 
 	query_results = questions_table.find({'type': 'question', 'tag': {'$in': user_tags}}).skip((page_number-1)*per_page).limit(per_page)
 	total_results_count = questions_table.count({'type': 'question', 'tag': {'$in': user_tags}})
