@@ -90,13 +90,14 @@ def getQuestionDetails(question_id):
 	question_details = questions_table.find({'_id': ObjectId(question_id)})
 	return_result = {}
 	question = {}
+
 	for ques in question_details:
 		for key, value in ques.iteritems():
 			if key != '_id':
 				question[key] = value
 			else:
 				question[key] = str(value)
-		question['is_upvoted'] = user_id in question['voters']
+		question['is_upvoted'] = user_id in question.get('voters', [])
 
 	return_result['question'] = question
 
@@ -105,7 +106,7 @@ def getQuestionDetails(question_id):
 	answers = []
 	accepted_answer = {}
 	for answer in answer_details:
-		answer['is_upvoted'] = user_id in answer['voters']
+		answer['is_upvoted'] = user_id in answer.get('voters', [])
 		if answer['type'] == 'answer':
 			answers.append(answer)
 		else:
