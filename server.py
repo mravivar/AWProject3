@@ -86,7 +86,7 @@ def register():
 def getQuestionDetails(question_id):
 
 	# fill question details
-	user_id = '3112'#session['user_id']
+	user_id = session['user_id']
 	question_details = questions_table.find({'_id': ObjectId(question_id)})
 	return_result = {}
 	question = {}
@@ -176,8 +176,8 @@ def upVote():
 	user_id = session['user_id']
 	mongo_id = input_text['id']
 	questions_table.update({'_id': ObjectId(mongo_id)}, {'$inc': {'vote': 1}, '$addToSet': {'voters': user_id}})
-	return_result = {'code': 200, 'message': 'success'}
-	return json.dumps(return_result)
+
+	return getQuestionDetails(input_text['question_id'])
   
 @login_required
 @app.route('/api/questions', methods=['POST'])
