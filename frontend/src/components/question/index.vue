@@ -1,7 +1,7 @@
 <template>
   <div class="container main-container">
     <div class="row">
-      <div class="col-md-offset-2 col-md-8 col-sm-12" v-if="question">
+      <div class="col-sm-12" v-if="question">
         <router-link to="/">Go back</router-link>
         <h3>{{question.title}}</h3>
         <div class="tag-list">

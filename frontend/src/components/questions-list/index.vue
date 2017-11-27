@@ -1,11 +1,11 @@
 <template>
-  <div class="col-md-offset-2 col-md-8 col-sm-12">
+  <div class="col-sm-12">
     <div class="list-actions">
       <div class="pull-right">
         <router-link to="ask_question" class="btn btn-primary">Ask Question</router-link>
       </div>
       <div class="row">
-        <div class="col-lg-9">
+        <div class="col-lg-6">
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Search for..." v-model="searchText" @keyup.enter="searchList">
             <span class="input-group-btn">

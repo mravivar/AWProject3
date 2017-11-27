@@ -13,4 +13,17 @@ a, a:hover, a:focus, a:active {
   min-height: 500px;
   border-radius: 5px;
   padding: 50px 20px;
+  @media (min-width: 768px) {
+    padding: 50px;
+  }
+}
+
+.jumbotron {
+  background-color: inherit;
+  text-align: center;
+}
+
+.nav.navbar-nav > li > a.router-link-active {
+  background-color: $navbar-default-link-active-bg;
+  color: $navbar-default-link-active-color;
 }

@@ -14,7 +14,7 @@
       <div class="row form-group">
         <div class='col-sm-12 btn-toolbar'>
           <button class='btn btn-primary' @click="addAnswer">Add Answer</button>
-          <button class='btn btn-primary' @click='toggleDisplay(false)'>Cancel</button>
+          <button class='btn btn-default' @click='toggleDisplay(false)'>Cancel</button>
         </div>
       </div>
     </div>

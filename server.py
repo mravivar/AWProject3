@@ -284,7 +284,7 @@ def userprofile():
 		return json.dumps(res)
 
 	user_id = session['user_id']
-	query_results = table.find({'user_id': user_id})
+	query_results = questions_table.find({'user_id': user_id})
 	return_result = {'code': 200, 'message': 'success'}
 	user_tuples = []
 
