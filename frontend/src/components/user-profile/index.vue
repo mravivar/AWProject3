@@ -6,6 +6,7 @@
           <li role="presentation" class="active"><a href="#questions" data-toggle="tab">Questions</a></li>
           <li role="presentation"><a href="#answers" data-toggle="tab">Answers</a></li>
           <li role="presentation"><a href="#accepted_answers" data-toggle="tab">Accepted Answers</a></li>
+          <li role="presentation"><a href="#graph" data-toggle="tab">Graph</a></li>
         </ul>
         <loading v-if="isLoading" />
         <div v-else class="tab-content">
@@ -17,6 +18,9 @@
           </div>
           <div id="accepted_answers" class="tab-pane fade">  
             <user-line-item :items="accepted_answers" />
+          </div>
+          <div id="graph" class="tab-pane fade">  
+            <graph></graph>
           </div>
         </div>
       </div>
