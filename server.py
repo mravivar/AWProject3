@@ -12,6 +12,7 @@ from nltk.corpus import stopwords
 import time
 from rake_nltk import Rake
 import datetime
+import arrow
 
 nltk.download('stopwords')
 
@@ -29,6 +30,13 @@ CORS(app)
 
 # config
 app.secret_key = 'aw project'
+
+# add activity count for user
+def addActivityCount():
+	user_id = session['user_id']
+	today_date = arrow.now().format('YY-MM-DD')
+	db.activity_count.update({'user_id': user_id, 'date': today_date}, {'$inc': {'visit_count': 1}}, upsert=True)
+	return
 
 # login required decorator
 def login_required(f):
@@ -87,7 +95,7 @@ def register():
 def getQuestionDetails(question_id):
 
 	# fill question detail
-
+	addActivityCount()
 	user_id = session['user_id']
 	question_details = questions_table.find({'_id': ObjectId(question_id)})
 	return_result = {}
@@ -128,6 +136,7 @@ def getQuestionDetails(question_id):
 @login_required
 @app.route('/api/search', methods=['GET'])
 def searchText():
+	addActivityCount()
 	if 'page' in request.args:
 		page_number = int(request.args['page'])
 	else:
@@ -173,6 +182,7 @@ def get_tags(content):
 @login_required
 @app.route('/api/accepted_answer', methods=['GET'])
 def changeAcceptedAnswer():
+	addActivityCount()
 	mongo_id = request.args['id']
 	questions_table.update_one({'_id': ObjectId(mongo_id)}, {'$set': {'type': 'accepted-answer'}})
 	return_result = {'code': 200, 'message': 'success'}
@@ -181,6 +191,7 @@ def changeAcceptedAnswer():
 @login_required
 @app.route('/api/upvote', methods=['POST'])
 def upVote():
+	addActivityCount()
 	input_text = request.get_json()
 	user_id = session['user_id']
 	mongo_id = input_text['id']
@@ -191,6 +202,7 @@ def upVote():
 @login_required
 @app.route('/api/questions', methods=['POST'])
 def addQuestion():
+	addActivityCount()
 	input_text = request.get_json()
 	insert_record = {}
 	user_id = session['user_id']
@@ -216,6 +228,7 @@ def addQuestion():
 @login_required
 @app.route('/api/answer', methods=['POST'])
 def addAnswer():
+	addActivityCount()
 	input_text = request.get_json()
 	insert_record = {}
 	user_id = session['user_id']
@@ -278,11 +291,12 @@ def getQuestions():
 	return json.dumps(return_result)
 
 @app.route('/api/userprofile', methods=['GET'])
-def userprofile():	
+def userprofile():
+
 	if not session['logged_in']:
 		res = {'code': 401, 'message':'User not logged in'}
 		return json.dumps(res)
-
+	
 	user_id = session['user_id']
 	query_results = questions_table.find({'user_id': user_id})
 	return_result = {'code': 200, 'message': 'success'}
@@ -292,7 +306,21 @@ def userprofile():
 	for result in query_results:
 		per_tuple = {'id': str(result['_id']), 'type': result['type'], 'title': result['title'].replace("&quot;", "'"), 'content': result['content'], 'text': result['text'], 'code': result['code'], 'time': result['time'], 'vote': result['vote'], 'reputation': result['reputation'], 'accept_rate': result['accept_rate'], 'tags': result['tag']}
 		user_tuples.append(per_tuple)
-	
+
+	activity_map = {}
+	mini = float("inf")
+	maxi = 0
+	query_result = db.activity_count.find({'user_id': user_id})
+	for result in query_result:
+		activity_map[result['date']] = result['visit_count']
+		mini = min(mini, result['visit_count'])
+		maxi = max(maxi, result['visit_count'])
+	if mini == float("inf"):
+		mini = 0
+	return_result['activity'] = activity_map
+	return_result['range'] = {'min': mini, 'max': maxi}
+
+
 	return_result['user_tuples'] = user_tuples
 	return json.dumps(return_result)
 
