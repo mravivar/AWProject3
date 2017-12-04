@@ -20,7 +20,7 @@
             <user-line-item :items="accepted_answers" />
           </div>
           <div id="graph" class="tab-pane fade">  
-            <graph></graph>
+            <graph :activity="activity" :range="range"></graph>
           </div>
         </div>
       </div>
@@ -33,6 +33,7 @@
 </style>
 
 <script>
+const moment = require('moment');
 
 export default {
   data (){
@@ -40,6 +41,8 @@ export default {
       questions: [],
       answers: [],
       accepted_answers: [],
+      activity: null,
+      range: [],
       isLoading: false
     };
   },
@@ -51,6 +54,12 @@ export default {
       this.questions = tuples.filter(tuple => tuple.type === 'question');
       this.answers = tuples.filter(tuple => tuple.type === 'answer');
       this.accepted_answers = tuples.filter(tuple => tuple.type === 'accepted_answers');
+      let _a = [];
+      for (let e in res.data.activity) {
+        _a.push({created_at: moment(e).format('YYYY-MM-DD'), counting: res.data.activity[e]});
+      }
+      console.log(_a);
+      this.activity = _a;
     }).finally(()=>{
       this.isLoading = false;
     });

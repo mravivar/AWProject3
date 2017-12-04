@@ -9,6 +9,7 @@ Vue.component('line-item', require('./components/line-item').default);
 Vue.component('user-line-item', require('./components/user-line-item').default);
 Vue.component('add-answer', require('./components/add-answer').default);
 Vue.component('graph', require('./components/graph').default);
+Vue.component('heat-map', require('./components/heat-map').default);
 
 new Vue({
   el: '#app',
