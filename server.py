@@ -309,7 +309,7 @@ def getQuestions():
 
 @app.route('/api/userprofile', methods=['GET'])
 def userprofile():
-
+	
 	if not session['logged_in']:
 		res = {'code': 401, 'message':'User not logged in'}
 		return json.dumps(res)
@@ -322,6 +322,9 @@ def userprofile():
 	# future enhancements: separate the results into questions and answers
 	for result in query_results:
 		per_tuple = {'id': str(result['_id']), 'type': result['type'], 'title': result['title'].replace("&quot;", "'"), 'content': result['content'], 'text': result['text'], 'code': result['code'], 'time': result['time'], 'vote': result['vote'], 'reputation': result['reputation'], 'accept_rate': result['accept_rate'], 'tags': result['tag']}
+		if result['type'] == 'answer':
+			temp = questions_table.find_one({'type': 'question', 'title': result['title']})
+			per_tuple['question_id'] = str(temp['_id'])
 		user_tuples.append(per_tuple)
 
 	activity_map = {}
