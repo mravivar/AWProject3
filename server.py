@@ -130,6 +130,7 @@ def getQuestionDetails(question_id):
 			accepted_answer = copy.deepcopy(answer)
 	return_result['answers'] = answers
 	return_result['accepted_answer'] = accepted_answer
+	return_result['current_user'] = user_id
 
 	return dumps(return_result)
 
