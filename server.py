@@ -132,6 +132,20 @@ def getQuestionDetails(question_id):
 	return_result['accepted_answer'] = accepted_answer
 	return_result['current_user'] = user_id
 
+	#finding suggested questions
+	query_results = questions_table.find({'type': 'question', 'tag': {'$all': question['tag']}}).limit(5)
+
+	questions = []
+	for result in query_results:
+		per_question = {'id': str(result['_id']), 'description': result['title'].replace("&quot;", "'"), 'tags': result['tag']}
+		question_user_tuple = user_table.find_one({'user_id': result['user_id']})
+		user_details = {'id': result['user_id'], 'name': question_user_tuple['user_name'], 'ratings': question_user_tuple['reputation']}
+		per_question['user'] = user_details
+		answer_count = questions_table.count({'title': result['title'], 'type': {'$in': ['answer', 'accepted-answer']}})
+		per_question['stats'] = {'votes': result['vote'], 'answer_count': answer_count}
+		questions.append(per_question)
+
+	return_result['suggested_questions'] = questions
 	return dumps(return_result)
 
 @login_required
