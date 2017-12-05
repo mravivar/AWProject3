@@ -197,13 +197,13 @@ def get_tags(content):
 	return list(set(phrases[0:number_of_words]))
 
 @login_required
-@app.route('/api/accepted_answer', methods=['GET'])
+@app.route('/api/accepted_answer', methods=['POST'])
 def changeAcceptedAnswer():
 	addActivityCount()
-	mongo_id = request.args['id']
+	input_text = request.get_json()
+	mongo_id = input_text['id']
 	questions_table.update_one({'_id': ObjectId(mongo_id)}, {'$set': {'type': 'accepted-answer'}})
-	return_result = {'code': 200, 'message': 'success'}
-	return json.dumps(return_result)
+	return getQuestionDetails(input_text['question_id'])
 
 @login_required
 @app.route('/api/upvote', methods=['POST'])
