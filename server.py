@@ -137,6 +137,8 @@ def getQuestionDetails(question_id):
 
 	questions = []
 	for result in query_results:
+		if str(result['_id']) == question_id:
+			continue
 		per_question = {'id': str(result['_id']), 'description': result['title'].replace("&quot;", "'"), 'tags': result['tag']}
 		question_user_tuple = user_table.find_one({'user_id': result['user_id']})
 		user_details = {'id': result['user_id'], 'name': question_user_tuple['user_name'], 'ratings': question_user_tuple['reputation']}
