@@ -6,7 +6,7 @@
           <li role="presentation" class="active"><a href="#questions" data-toggle="tab">Questions</a></li>
           <li role="presentation"><a href="#answers" data-toggle="tab">Answers</a></li>
           <li role="presentation"><a href="#accepted_answers" data-toggle="tab">Accepted Answers</a></li>
-          <li role="presentation"><a href="#graph" data-toggle="tab">Graph</a></li>
+          <li role="presentation"><a href="#graph" data-toggle="tab">Activity Graph</a></li>
         </ul>
         <loading v-if="isLoading" />
         <div v-else class="tab-content">

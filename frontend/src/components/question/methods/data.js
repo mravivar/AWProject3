@@ -3,6 +3,8 @@ export default function  () {
     question : null,
     answers: [],
     acceptedAnswer : null,
-    isLoading : false
+    isLoading : false,
+    recommendations: [],
+    currentUser: null
   }
 }

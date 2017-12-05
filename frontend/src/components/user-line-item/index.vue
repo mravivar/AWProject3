@@ -1,7 +1,7 @@
 <template>
   <div v-if="items.length > 0">
     <div v-for="item in items">
-      <h3>{{item.title}}</h3>
+      <router-link :to="{name: 'question', params: { id: item.id}}" tag="h3" class="cursor-pointer">{{item.title}}</router-link>
       <div class="tag-list">
         <div v-for="tag in item.tags" class="tag">{{tag}}</div>
       </div>
@@ -14,7 +14,7 @@
           <div class="user-details">
             <div class="pull-right"><strong>Posted On {{item.time}}</strong></div>
           </div>
-          <div class="item-content" v-html="item.content"></div>
+          <div class="item-content" v-html="sanitize(item.content)"></div>
         </div>
         <hr>
       </div>
@@ -27,8 +27,13 @@
 
 <script>
 
+import sanitize from '../../utils/sanitize';
+  
 export default {
-  props: ['items']
+  props: ['items'],
+  methods: {
+    sanitize
+  }
 }
 
 </script>

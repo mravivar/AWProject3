@@ -1,5 +1,9 @@
 <template>
   <div class="container main-container">
+    <div class="row">
+      <div class="col-sm-12 form-group">
+        <router-link to="/">Go back</router-link>
+      </div>
     <div class="col-md-offset-2 col-md-8 col-sm-12">
       <div class="row">
         <form>
@@ -21,6 +25,7 @@
           <button type="submit" class="btn btn-primary" @click='askQuestion'>Submit</button>
         </form>
       </div>
+    </div>
     </div>
   </div>
 </template>
