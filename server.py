@@ -34,7 +34,7 @@ app.secret_key = 'aw project'
 # add activity count for user
 def addActivityCount():
 	user_id = session['user_id']
-	today_date = arrow.now().format('YY-MM-DD')
+	today_date = arrow.now().format('MM-DD-YY')
 	db.activity_count.update({'user_id': user_id, 'date': today_date}, {'$inc': {'visit_count': 1}}, upsert=True)
 	return
 
