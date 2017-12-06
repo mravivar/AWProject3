@@ -34,6 +34,7 @@
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-primary">Sign in</button>
+            <a onclick="populate()">Click here to use credentials of an existing dummy user.</a>
           </div>
         </div>
       </form>
@@ -46,5 +47,11 @@
         {{ message }}
       {% endfor %}
     </div>
+    <script>
+      function populate() {
+        document.getElementById('userName').value = "1707520";
+        document.getElementById('password').value = "123";
+      }
+    </script>
   </body>
 </html>

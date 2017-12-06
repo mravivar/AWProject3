@@ -15,4 +15,5 @@ body {
 
 a:hover, a:active, a:focus {
   text-decoration: none;
+  cursor: pointer;
 }
