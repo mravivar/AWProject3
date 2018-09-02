@@ -1,4 +1,5 @@
-# AWProject3
+# Recommendation System
+Since discussion forums have been increasingly used over the recent years, the data in the forum keeps booming which leads to information deluge. Users have to go through lots of content before finding the required information. This is unnecessary and time consuming. The solution to this problem and objective of this poject is to develop a system that provides adaptive navigation support for discussion forum posts.
 
 ## Database
 Python version: 3.5.2 (3.x should work fine)
@@ -29,7 +30,7 @@ db.table2.updateMany({},{$set:{"password":NumberInt(123)}},false,false)
 
 Database:awproject3 and Collection:table1 are created in mongodb  
 
-## Flask server:  
+## Python Flask server:  
 1. To install the needed python packages  
 $ cd awproject3  
 $ pip install -r requirements.txt  
@@ -39,7 +40,7 @@ $ cd awproject3
 $ python server.py  
 
 3. In browser, goto: http://localhost:5000/  
-You will see some output.  
+You will see the output.  
 
 ## Frontend 
 1. run `npm install` inside the `frontend` folder
