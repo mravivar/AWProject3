@@ -1,5 +1,5 @@
 # Recommendation System
-Since discussion forums have been increasingly used over the recent years, the data in the forum keeps booming which leads to information deluge. Users have to go through lots of content before finding the required information. This is unnecessary and time consuming. The solution to this problem and objective of this poject is to develop a system that provides adaptive navigation support for discussion forum posts.
+Since discussion forums have been increasingly used over the recent years, the data in the forum keeps booming which leads to information deluge. Users have to go through lots of content before finding the required information. This is unnecessary and time consuming. The solution to this problem and objective of this poject is to develop a system that provides adaptive navigation support using a content-based recommendation engine for discussion forum posts.
 
 ## Database
 Python version: 3.5.2 (3.x should work fine)
